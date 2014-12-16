@@ -1,10 +1,13 @@
 var gulp = require('gulp');
 var coffee = require('gulp-coffee');
 var gutil = require('gulp-util');
+var watch = require('gulp-watch');
+var react = require('gulp-react');
 // var traceur = require('gulp-traceur');
 
 gulp.task('default', function () {
-  gulp.src('./app/*.coffee')
+  watch('./app/**')
   .pipe(coffee({bare: true}).on('error', gutil.log))
-  .pipe(gulp.dest('./app/'))
+  .pipe(react())
+  .pipe(gulp.dest('./build/'))
 });

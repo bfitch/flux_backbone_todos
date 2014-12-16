@@ -9,6 +9,8 @@
     "gulp-traceur": "0.13.0",
     "coffee-script": "1.8.0",
     "gulp-coffee": "2.2.0",
-    "gulp-util": "3.0.1"
+    "gulp-util": "3.0.1",
+    "gulp-watch": "1.0.7",
+    "gulp-react": "1.0.2"
   }
 }

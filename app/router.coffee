@@ -1,13 +1,15 @@
+`/** @jsx React.DOM */`
+
+`import TodoApp from './components/todo_app'`
+
 class Router extends Backbone.Router
   routes:
-      '':          'home',
-      'resources': 'resources'
+      '': 'root'
 
-  home: ->
-    console.log('Router#home was called!')
-    
-  resources: ->
-    $('#app').append "<h1>CRAP</h1>"
-    console.log('Router#resources was called!')
+  root: ->
+    React.renderComponent(
+      `<TodoApp />`,
+      document.getElementById('app')
+    )
 
 `export default Router`

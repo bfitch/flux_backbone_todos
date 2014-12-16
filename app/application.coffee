@@ -2,12 +2,7 @@
 
 class Application
   constructor: ->
-    @router()
+    new Router()
     Backbone.history.start()
 
-  router: ->
-    @_router ||= new Router()
-
-$ () =>
-  x = new Application()
-  console.log x
+$ => new Application()
