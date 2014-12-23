@@ -2,26 +2,10 @@
 
 `import TodoStore from '../stores/todo_store'`
 `import TodoItem from './todo_item'`
-
-# var Footer = require('./Footer.react');
-# var Header = require('./Header.react');
-# var MainSection = require('./MainSection.react');
-# var React = require('react');
-# var TodoStore = require('../stores/TodoStore');
-
-# function getTodoState() {
-#   return {
-#     allTodos: TodoStore.getAll(),
-#     areAllComplete: TodoStore.areAllComplete()
-#   };
-# }
-#
-      # <Header />
-      # <MainSection
-      #   allTodos={this.state.allTodos}
-      #   areAllComplete={this.state.areAllComplete}
-      # />
-      # <Footer allTodos={this.state.allTodos} />
+`import Header from './header'`
+`import MainSection from './main_section'`
+`import TodoActions from '../actions/todo_actions'`
+`import Dispatcher from '../dispatcher'`
 
 DATA = [
   {complete: false,
@@ -30,29 +14,33 @@ DATA = [
 
 TodoApp = React.createClass(
   getInitialState: ->
-    allTodos: new TodoStore DATA
+    @_getTodoState()
+    # allTodos:       TodoStore #.reset DATA
+    # areAllComplete: false
 
-  # componentDidMount: ->
-  #   TodoStore.addChangeListener(this._onChange)
-  #
-  # componentWillUnmount: ->
-  #   TodoStore.removeChangeListener(this._onChange)
+  componentDidMount:    -> TodoStore.on 'add set', @_onChange, @
+  componentWillUnmount: -> TodoStore.off null, null, @
 
   render: ->
     todos = @state.allTodos
-    items = todos.map (todo) =>
-      `<TodoItem key={todo.cid} todo={todo}></TodoItem>`
-
-    console.log items
 
     `<div>
-      <ul id="todo-list">
-       {items}
-      </ul>
+      <Header />
+      <MainSection
+        allTodos={this.state.allTodos}
+        areAllComplete={this.state.areAllComplete}
+      />
     </div>`
 
-  # _onChange: ->
-  #   this.setState getTodoState()
+      # <Footer allTodos={this.state.allTodos} />
+
+  _onChange: ->
+    console.log "_onChange"
+    this.setState @_getTodoState()
+
+  _getTodoState: ->
+    allTodos:       TodoStore
+    areAllComplete: false
 )
 
 `export default TodoApp`

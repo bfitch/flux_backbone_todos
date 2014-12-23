@@ -1,6 +1,10 @@
 /** @jsx React.DOM */;
 import TodoStore from '../stores/todo_store';
 import TodoItem from './todo_item';
+import Header from './header';
+import MainSection from './main_section';
+import TodoActions from '../actions/todo_actions';
+import Dispatcher from '../dispatcher';
 var DATA, TodoApp;
 
 DATA = [
@@ -12,24 +16,34 @@ DATA = [
 
 TodoApp = React.createClass({displayName: 'TodoApp',
   getInitialState: function() {
-    return {
-      allTodos: new TodoStore(DATA)
-    };
+    return this._getTodoState();
+  },
+  componentDidMount: function() {
+    return TodoStore.on('add set', this._onChange, this);
+  },
+  componentWillUnmount: function() {
+    return TodoStore.off(null, null, this);
   },
   render: function() {
-    var items, todos;
+    var todos;
     todos = this.state.allTodos;
-    items = todos.map((function(_this) {
-      return function(todo) {
-        return TodoItem({key: todo.cid, todo: todo});
-      };
-    })(this));
-    console.log(items);
     return React.DOM.div(null, 
-       React.DOM.ul({id: "todo-list"}, 
-       items
+      Header(null), 
+      MainSection({
+        allTodos: this.state.allTodos, 
+        areAllComplete: this.state.areAllComplete}
       )
     );
+  },
+  _onChange: function() {
+    console.log("_onChange");
+    return this.setState(this._getTodoState());
+  },
+  _getTodoState: function() {
+    return {
+      allTodos: TodoStore,
+      areAllComplete: false
+    };
   }
 });
 
