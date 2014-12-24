@@ -1,4 +1,5 @@
 /** @jsx React.DOM */;
+import TodoActions from '../actions/todo_actions';
 import TodoItem from './todo_item';
 var MainSection;
 
@@ -25,7 +26,9 @@ MainSection = React.createClass({displayName: 'MainSection',
       React.DOM.ul({id: "todo-list"}, todos)
     );
   },
-  _onToggleCompleteAll: function() {}
+  _onToggleCompleteAll: function() {
+    return TodoActions.toggleAllComplete();
+  }
 });
 
 export default MainSection;

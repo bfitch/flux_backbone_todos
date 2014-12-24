@@ -1,6 +1,6 @@
 `/** @jsx React.DOM */`
 
-# var TodoActions = require('../actions/TodoActions');
+`import TodoActions from '../actions/todo_actions'`
 `import TodoItem from './todo_item'`
 
 MainSection = React.createClass(
@@ -24,7 +24,7 @@ MainSection = React.createClass(
     </section>`
 
   _onToggleCompleteAll: ->
-    # TodoActions.toggleCompleteAll()
+    TodoActions.toggleAllComplete()
 )
 
 `export default MainSection`

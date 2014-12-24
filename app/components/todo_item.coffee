@@ -42,13 +42,13 @@ TodoItem = React.createClass(
   _onDoubleClick: ->
     this.setState isEditing: true
 
-  _onSave: ->
-    console.log "save"
-    # TodoActions.updateText(this.props.todo.id, text)
-    this.setState isEditing: false
+  _onSave: (value) ->
+    cid = @props.todo.cid
+    TodoActions.updateText(cid, value)
+    @setState isEditing: false
 
   _onDestroyClick: ->
-    # TodoActions.destroy(@props.todo.id)
+    TodoActions.destroy(@props.todo.cid)
 
   _itemClass: ->
     if @state.isEditing

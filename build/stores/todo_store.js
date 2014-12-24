@@ -20,8 +20,22 @@ TodoCollection = (function(_super) {
     return Dispatcher.register(this._dispatchCallback);
   };
 
+  TodoCollection.prototype.areAllComplete = function() {
+    return !this.some((function(_this) {
+      return function(todo) {
+        return !todo.get('complete');
+      };
+    })(this));
+  };
+
+  TodoCollection.prototype.completed = function() {
+    return this.where({
+      complete: true
+    });
+  };
+
   TodoCollection.prototype._dispatchCallback = function(payload) {
-    var action, model;
+    var action;
     action = payload.action;
     switch (action.actionType) {
       case 'TODO_CREATE':
@@ -30,16 +44,45 @@ TodoCollection = (function(_super) {
           complete: false
         });
       case 'TODO_TOGGLE_COMPLETE':
-        model = this.find({
-          cid: action.cid
-        });
-        model.set({
+        return this._updateAttributes(action, {
           complete: action.complete
         });
-        return this.set([model], {
-          remove: false
+      case 'TODO_UPDATE':
+        return this._updateAttributes(action, {
+          text: action.text
         });
+      case 'TODO_TOGGLE_ALL_COMPLETE':
+        if (this.areAllComplete()) {
+          return this._toggleCompleteValues(false);
+        } else {
+          return this._toggleCompleteValues(true);
+        }
+        break;
+      case 'TODO_DESTROY':
+        return this.remove(action.models);
     }
+  };
+
+  TodoCollection.prototype._toggleCompleteValues = function(bool) {
+    return this.each((function(_this) {
+      return function(todo) {
+        return todo.set({
+          complete: bool
+        });
+      };
+    })(this));
+  };
+
+  TodoCollection.prototype._updateAttributes = function(action, attrs) {
+    var model;
+    model = this._findByCid(action);
+    return model.set(attrs);
+  };
+
+  TodoCollection.prototype._findByCid = function(action) {
+    return this.find({
+      cid: action.cid
+    });
   };
 
   return TodoCollection;

@@ -45,13 +45,17 @@ TodoItem = React.createClass({displayName: 'TodoItem',
       isEditing: true
     });
   },
-  _onSave: function() {
-    console.log("save");
+  _onSave: function(value) {
+    var cid;
+    cid = this.props.todo.cid;
+    TodoActions.updateText(cid, value);
     return this.setState({
       isEditing: false
     });
   },
-  _onDestroyClick: function() {},
+  _onDestroyClick: function() {
+    return TodoActions.destroy(this.props.todo.cid);
+  },
   _itemClass: function() {
     if (this.state.isEditing) {
       return 'editing';
